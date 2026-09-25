@@ -1,8 +1,8 @@
 import json
-from datasets import Dataset
+import torch
+from torch.utils.data import Dataset
 from unsloth import FastLanguageModel, is_bfloat16_supported
-from trl import SFTTrainer
-from transformers import TrainingArguments
+from transformers import Trainer, TrainingArguments, DataCollatorForLanguageModeling
 
 # 1. CONFIGURATION
 MODEL_ID = "unsloth/Qwen2.5-1.5B-Instruct-bnb-4bit"
@@ -29,12 +29,12 @@ model = FastLanguageModel.get_peft_model(
     use_gradient_checkpointing="unsloth",
 )
 
-# 3. LOAD AND FORMAT DATASET (Bypasses the buggy Hugging Face JSON loader)
+# 3. LOAD AND FORMAT DATASET (Pure PyTorch, bypasses HF datasets/dill entirely)
 print("📂 Loading and formatting dataset...")
 with open(DATASET_PATH, "r", encoding="utf-8") as f:
     raw_data = json.load(f)
 
-formatted_data = []
+texts = []
 for item in raw_data:
     instruction = item.get("instruction", "")
     output = item.get("output", "")
@@ -51,21 +51,36 @@ for item in raw_data:
         f"{output}\n"
         "<|im_end|>"
     )
-    formatted_data.append({"text": text})
+    texts.append(text)
 
-# Create dataset directly from list, dodging the dill/pickle hashing bug
-dataset = Dataset.from_list(formatted_data)
-print(f"✅ Successfully loaded {len(dataset)} examples.")
+print(f"✅ Loaded {len(texts)} examples. Tokenizing...")
+
+# Tokenize all at once (much faster and avoids per-item overhead)
+encodings = tokenizer(
+    texts,
+    truncation=True,
+    padding=True,
+    max_length=1024,
+    return_tensors="pt"
+)
+
+# Native PyTorch Dataset (Zero dill/pickle dependencies)
+class SimpleDataset(Dataset):
+    def __init__(self, encodings):
+        self.encodings = encodings
+    def __len__(self):
+        return len(self.encodings.input_ids)
+    def __getitem__(self, idx):
+        return {key: val[idx] for key, val in self.encodings.items()}
+
+dataset = SimpleDataset(encodings)
+print(f"✅ Dataset ready with {len(dataset)} tokenized examples.")
 
 # 4. TRAIN
-trainer = SFTTrainer(
+trainer = Trainer(
     model=model,
-    tokenizer=tokenizer,
     train_dataset=dataset,
-    dataset_text_field="text",
-    max_seq_length=1024,
-    dataset_num_proc=2,
-    packing=False,
+    data_collator=DataCollatorForLanguageModeling(tokenizer, mlm=False),
     args=TrainingArguments(
         per_device_train_batch_size=2,
         gradient_accumulation_steps=4,
@@ -80,13 +95,25 @@ trainer = SFTTrainer(
         lr_scheduler_type="linear",
         seed=3407,
         output_dir="outputs",
+        save_strategy="epoch",
     ),
 )
 
 print("🎵 Starting training...")
 trainer.train()
 
-# 5. EXPORT TO GGUF (Ready for Ollama)
-print("💾 Exporting to GGUF (Q4_K_M quantization)...")
-model.save_pretrained_gguf(OUTPUT_DIR, tokenizer, quantization_method="q4_k_m")
-print(f"✅ Done! Model saved to {OUTPUT_DIR}")
+# 5. SAVE LoRA ADAPTER ONLY (Fast, no merging, no quantization issues)
+print("💾 Saving LoRA adapter...")
+adapter_dir = "./lora_adapter"
+
+import shutil
+import os
+if os.path.exists(adapter_dir):
+    shutil.rmtree(adapter_dir)
+
+# Save just the adapter weights (tiny file, ~50MB)
+model.save_pretrained(adapter_dir)
+tokenizer.save_pretrained(adapter_dir)
+
+print(f"✅ LoRA adapter saved to {adapter_dir}")
+print("🎉 Training complete! Now run the merge script to create the final model.")
