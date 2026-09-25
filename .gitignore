@@ -217,3 +217,5 @@ __marimo__/
 # Streamlit
 .streamlit/secrets.toml
 unsloth_compiled_cache
+lora_adapter
+outputs
