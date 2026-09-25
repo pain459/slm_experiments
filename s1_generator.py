@@ -13,8 +13,8 @@ from itertools import combinations
 PDF_PATH = "my_textbook.pdf"
 OUTPUT_FILE = "dataset.json"
 OLLAMA_MODEL = "llama3.1:8b"  # or "mistral", "phi3", "qwen2"
-SINGLE_CHAPTER_QA = 20   # Number of simple Q&A pairs
-CROSS_CHAPTER_QA = 15    # Number of complex synthesis Q&A pairs
+SINGLE_CHAPTER_QA = 2000   # Number of simple Q&A pairs
+CROSS_CHAPTER_QA = 1500    # Number of complex synthesis Q&A pairs
 CACHE_DIR = ".cache"     # Intermediate results saved here
 
 os.makedirs(CACHE_DIR, exist_ok=True)
@@ -163,13 +163,21 @@ def generate_single_chapter_qa(chapters, num_examples):
         ch = random.choice(chapter_keys)
         excerpt = chapters[ch][random.randint(0, max(0, len(chapters[ch]) - 2000)):][:2000]
         
-        prompt = f"""Based ONLY on the following textbook excerpt, generate ONE challenging exam question and its detailed answer.
+        # For Single Chapter:
+        prompt = f"""You are a blind text-extraction machine. You know NOTHING about this topic. 
+        Your ONLY source of truth is the text provided below. 
 
-Excerpt from "{ch}":
-{excerpt}
+        Excerpt:
+        {excerpt}
 
-Output strictly as JSON:
-{{"instruction": "The question", "input": "", "output": "The detailed answer citing specific concepts from the text"}}"""
+        Task: Generate ONE exam question and answer based STRICTLY on the excerpt above.
+        RULES:
+        1. Do NOT use any outside knowledge or pre-trained facts.
+        2. The answer must be directly derivable from the text.
+        3. If the text does not contain enough information to form a good question, output exactly: {{"instruction": "SKIP", "output": "SKIP"}}
+
+        Output strictly as JSON:
+        {{"instruction": "The question", "input": "", "output": "The answer citing the text"}}"""
         
         result = extract_json_from_text(call_ollama(prompt))
         if result and "instruction" in result and "output" in result:
@@ -201,16 +209,20 @@ def generate_cross_chapter_qa(chapters, summaries, num_examples):
         excerpt1 = chapters[ch1][:1500]
         excerpt2 = chapters[ch2][:1500]
         
-        prompt = f"""You are an expert exam writer. Create a complex scenario-based question that CANNOT be answered using only one chapter. The student MUST combine principles from both chapters.
+        prompt = f"""You are a blind text-extraction machine. You know NOTHING about this topic.
+        Your ONLY source of truth is the two excerpts provided below.
 
-Chapter A ("{ch1}") Summary: {summaries.get(ch1, 'N/A')}
-Chapter A Excerpt: {excerpt1}
+        Chapter A Excerpt: {excerpt1}
+        Chapter B Excerpt: {excerpt2}
 
-Chapter B ("{ch2}") Summary: {summaries.get(ch2, 'N/A')}
-Chapter B Excerpt: {excerpt2}
+        Task: Generate ONE scenario-based question that requires combining information from BOTH excerpts.
+        RULES:
+        1. Do NOT use any outside knowledge. If a concept isn't in these two excerpts, do not use it.
+        2. The answer must explicitly quote or reference the provided text.
+        3. If the excerpts cannot be logically combined, output exactly: {{"instruction": "SKIP", "output": "SKIP"}}
 
-Output strictly as JSON:
-{{"instruction": "A novel scenario requiring both chapters' knowledge", "input": "", "output": "Step 1: From [Chapter A concept]... Step 2: Combining with [Chapter B concept]... Conclusion:..."}}"""
+        Output strictly as JSON:
+        {{"instruction": "The scenario question", "input": "", "output": "Step 1: Excerpt A says... Step 2: Excerpt B says... Conclusion:..."}}"""
         
         result = extract_json_from_text(call_ollama(prompt))
         if result and "instruction" in result and "output" in result:
