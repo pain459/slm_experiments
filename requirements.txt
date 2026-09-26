@@ -86,6 +86,7 @@ six==1.17.0
 structlog==26.1.0
 sympy==1.14.0
 threadpoolctl==3.7.0
+tiktoken==0.14.0
 tokenizers==0.22.2
 torch==2.14.0
 torchao==0.18.0

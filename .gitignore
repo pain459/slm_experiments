@@ -219,3 +219,7 @@ __marimo__/
 unsloth_compiled_cache
 lora_adapter
 outputs
+merged_hf_model
+textbook_tutor_Q4_K_M.gguf
+textbook_tutor.gguf
+Modelfile
