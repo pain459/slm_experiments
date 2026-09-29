@@ -224,3 +224,4 @@ textbook_tutor_Q4_K_M.gguf
 textbook_tutor.gguf
 Modelfile
 data_distill/*.json
+local_rag_proxy/chroma_db
