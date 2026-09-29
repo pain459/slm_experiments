@@ -6,7 +6,7 @@ from transformers import Trainer, TrainingArguments, DataCollatorForLanguageMode
 
 # Configuration
 MODEL_ID = "unsloth/Qwen2.5-3B-Instruct-bnb-4bit"
-DATASET_PATH = "comprehensive_dataset_dsa.json"
+DATASET_PATH = "final_master_dataset.json"
 OUTPUT_DIR = "./python_tutor_adapter"
 
 # Load model
