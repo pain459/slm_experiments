@@ -7,7 +7,7 @@ from typing import List, Dict
 
 # Configuration
 MODEL_NAME = "qwen2.5:7b"
-OUTPUT_FILE = "comprehensive_dataset.json"
+OUTPUT_FILE = "comprehensive_dataset_expert.json"
 QUESTIONS_PER_TOPIC = 100
 
 # Question types and difficulties for diversity
@@ -27,20 +27,31 @@ QUESTION_TYPES = [
 DIFFICULTY_LEVELS = ["beginner", "intermediate", "advanced", "expert"]
 
 TOPICS = [
-        "Python syntax and semantics",
-        "Variables, datatypes (int, float, str, bool, None)",
-        "Operators (arithmetic, comparison, logical, assignment)",
-        "Control flow: if/elif/else, for loops, while loops",
-        "Functions: definition, parameters, return values, scope",
-        "Strings: methods, slicing, formatting (f-strings, format(), %)",
-        "Lists: creation, indexing, methods, slicing",
-        "Tuples: immutability, unpacking",
-        "Dictionaries: creation, access, methods",
-        "Sets: creation, operations (union, intersection, difference)",
-        "Type conversion and casting",
-        "Input/output: print(), input(), file basics",
-        "Error handling: try/except/finally, common exceptions",
-        "Modules and imports: import, from...import, name"
+        "Memory model: objects, references, mutability, id()",
+        "Name resolution: LEGB rule, global, nonlocal",
+        "Import system: sys.modules, circular imports, relative imports",
+        "Complete data model: all dunder methods (50+)",
+        "Advanced metaprogramming: init_subclass, class decorators",
+        "Advanced decorators: decorator factories, decorator classes",
+        "Advanced generators: yield from, generator delegation",
+        "Async generators and async context managers",
+        "Advanced OOP: new vs init, singleton patterns",
+        "Advanced inheritance: cooperative multiple inheritance",
+        "Advanced descriptors: managed attributes, lazy evaluation",
+        "Advanced type hints: Protocol, TypeVar, Generic, Literal, Annotated",
+        "Advanced asyncio: TaskGroup, streams, protocols, low-level API",
+        "Shared memory multiprocessing",
+        "Actor model patterns",
+        "Profiling: cProfile, line_profiler, memory_profiler",
+        "Performance optimization techniques",
+        "Cython and C extensions (conceptual)",
+        "PyPy considerations",
+        "Advanced testing: mocking, property-based testing (hypothesis)",
+        "Advanced packaging: pyproject.toml, build systems",
+        "Design patterns: Singleton, Factory, Builder, Observer, Strategy",
+        "Security: input validation, SQL injection, XSS, CSRF",
+        "DevOps: CI/CD, Docker, logging strategies",
+        "Interoperability: ctypes, cffi, pybind11, PyO3"
 ]
 
 def clean_json_response(response_text: str) -> str:
