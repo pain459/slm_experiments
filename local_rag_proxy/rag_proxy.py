@@ -1,5 +1,6 @@
 # rag_proxy.py
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 import chromadb
 import requests
@@ -8,7 +9,6 @@ import json
 app = FastAPI()
 
 # --- 1. Initialize ChromaDB (Local Vector Store) ---
-# This stores data in a local folder named 'chroma_db'
 chroma_client = chromadb.PersistentClient(path="./chroma_db")
 collection = chroma_client.get_or_create_collection(name="python_curriculum")
 
@@ -17,7 +17,7 @@ def get_embedding(text: str) -> list[float]:
     """Gets embedding from local Ollama nomic-embed-text model."""
     response = requests.post(
         "http://localhost:11434/api/embeddings",
-        json={"model": "nomic-embed-text", "prompt": text}
+        json={"model": "nomic-embed-text", "prompt": text, "keep_alive": "15m"} # Keep model warm
     )
     return response.json()["embedding"]
 
@@ -71,15 +71,17 @@ def chat_completion(req: ChatRequest):
     if not user_prompt:
         raise HTTPException(status_code=400, detail="No user prompt found.")
 
-    # 2. Query our local RAG for context
-    rag_context = query_rag(user_prompt)
+    # 2. SMART BYPASS: Skip RAG lookup for short, conversational prompts
+    rag_context = ""
+    if len(user_prompt.strip()) > 30: 
+        rag_context = query_rag(user_prompt)
     
-    # 3. Augment the prompt with RAG context
-    system_prompt = "You are an expert Python coding assistant. Use the following context from the curriculum to answer the user's question accurately.\n\n"
+    # 3. Augment the prompt with RAG context (only if found)
+    system_prompt = "You are an expert Python coding assistant."
     if rag_context:
-        system_prompt += f"### RETRIEVED CONTEXT ###\n{rag_context}\n### END CONTEXT ###\n\n"
+        system_prompt += f"\n\nUse the following context from the curriculum to answer accurately:\n### RETRIEVED CONTEXT ###\n{rag_context}\n### END CONTEXT ###"
     else:
-        system_prompt += "No specific context was retrieved. Rely on your general knowledge.\n\n"
+        system_prompt += "\n\nRely on your general Python knowledge."
 
     # 4. Rebuild the messages array with the augmented system prompt
     augmented_messages = [{"role": "system", "content": system_prompt}]
@@ -88,23 +90,42 @@ def chat_completion(req: ChatRequest):
     # 5. Forward to Ollama's OpenAI-compatible endpoint
     ollama_url = "http://localhost:11434/v1/chat/completions"
     payload = {
-        "model": "qwen2.5:1.5b", # Placeholder until your custom GGUF is ready
+        "model": "qwen2.5:1.5b", 
         "messages": augmented_messages,
-        "stream": req.stream
+        "stream": req.stream,
+        "options": {"keep_alive": "15m"} # Keep the LLM warm in VRAM
     }
     
-    # Note: For simplicity, we are doing a non-streaming request here. 
-    # OpenCode handles streaming, but let's get the base logic working first.
-    payload["stream"] = False 
-    
-    response = requests.post(ollama_url, json=payload)
-    
-    if response.status_code != 200:
-        raise HTTPException(status_code=500, detail=f"Ollama error: {response.text}")
-        
-    return response.json()
+    # 6. Handle Streaming vs Non-Streaming
+    if req.stream:
+        def generate():
+            with requests.post(ollama_url, json=payload, stream=True) as response:
+                for line in response.iter_lines():
+                    if line:
+                        yield line + b"\n"
+        return StreamingResponse(generate(), media_type="text/event-stream")
+    else:
+        response = requests.post(ollama_url, json=payload)
+        if response.status_code != 200:
+            raise HTTPException(status_code=500, detail=f"Ollama error: {response.text}")
+        return response.json()
+
+@app.get("/v1/models")
+def list_models():
+    """OpenAI-compatible endpoint to list available models for the client."""
+    return {
+        "object": "list",
+        "data": [
+            {
+                "id": "gpt-3.5-turbo",  
+                "object": "model",
+                "created": 1686935002,
+                "owned_by": "local-rag-proxy"
+            }
+        ]
+    }
 
 if __name__ == "__main__":
     import uvicorn
-    print("🚀 Starting RAG Proxy on http://localhost:8000")
+    print("🚀 Starting RAG Proxy on http://localhost:8000 (Streaming & Keep-Alive Enabled)")
     uvicorn.run(app, host="0.0.0.0", port=8000)
