@@ -8,7 +8,7 @@ from typing import List, Dict
 # Configuration
 MODEL_NAME = "qwen2.5:7b"
 OUTPUT_FILE = "comprehensive_dataset_expert.json"
-QUESTIONS_PER_TOPIC = 100
+QUESTIONS_PER_TOPIC = 500
 
 # Question types and difficulties for diversity
 QUESTION_TYPES = [
@@ -27,31 +27,25 @@ QUESTION_TYPES = [
 DIFFICULTY_LEVELS = ["beginner", "intermediate", "advanced", "expert"]
 
 TOPICS = [
-        "Memory model: objects, references, mutability, id()",
-        "Name resolution: LEGB rule, global, nonlocal",
-        "Import system: sys.modules, circular imports, relative imports",
-        "Complete data model: all dunder methods (50+)",
-        "Advanced metaprogramming: init_subclass, class decorators",
-        "Advanced decorators: decorator factories, decorator classes",
-        "Advanced generators: yield from, generator delegation",
-        "Async generators and async context managers",
-        "Advanced OOP: new vs init, singleton patterns",
-        "Advanced inheritance: cooperative multiple inheritance",
-        "Advanced descriptors: managed attributes, lazy evaluation",
-        "Advanced type hints: Protocol, TypeVar, Generic, Literal, Annotated",
-        "Advanced asyncio: TaskGroup, streams, protocols, low-level API",
-        "Shared memory multiprocessing",
-        "Actor model patterns",
-        "Profiling: cProfile, line_profiler, memory_profiler",
-        "Performance optimization techniques",
-        "Cython and C extensions (conceptual)",
-        "PyPy considerations",
-        "Advanced testing: mocking, property-based testing (hypothesis)",
-        "Advanced packaging: pyproject.toml, build systems",
-        "Design patterns: Singleton, Factory, Builder, Observer, Strategy",
-        "Security: input validation, SQL injection, XSS, CSRF",
-        "DevOps: CI/CD, Docker, logging strategies",
-        "Interoperability: ctypes, cffi, pybind11, PyO3"
+    "Complexity Analysis: Big O, space/time complexity, amortized analysis",
+    "Arrays & Strings: Two pointers, sliding window, prefix sums",
+    "Linked Lists: Singly, doubly, circular, operations, cycle detection",
+    "Stacks & Queues: Implementation, applications (parenthesis matching, BFS)",
+    "Hash Tables: Hash functions, collision handling, applications",
+    "Trees: Binary trees, BST, traversals (in/pre/post/level), AVL, Red-Black (conceptual)",
+    "Heaps/Priority Queues: Min/max heap, heapify, applications (Dijkstra, scheduling)",
+    "Graphs: Representation (adjacency list/matrix), BFS, DFS, topological sort",
+    "Graph Algorithms: Dijkstra, Bellman-Ford, Floyd-Warshall, Kruskal, Prim",
+    "Recursion: Base cases, recursive tree, memoization",
+    "Dynamic Programming: Memoization, tabulation, classic problems (knapsack, LCS, LIS)",
+    "Greedy Algorithms: Activity selection, Huffman coding, fractional knapsack",
+    "Divide & Conquer: Merge sort, quick sort, binary search variations",
+    "Backtracking: N-queens, sudoku solver, subset sum",
+    "Trie: Prefix tree, autocomplete, word search",
+    "Segment Trees & Fenwick Trees: Range queries, point updates",
+    "Disjoint Set (Union-Find): Path compression, union by rank",
+    "String Algorithms: KMP, Rabin-Karp, Z-algorithm",
+    "Bit Manipulation: Bitwise operators, bit masks, bit tricks"
 ]
 
 def clean_json_response(response_text: str) -> str:
