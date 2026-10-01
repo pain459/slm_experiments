@@ -1,0 +1,25 @@
+judge:
+  backend: hf
+  model_id: Qwen/Qwen2.5-Coder-7B-Instruct
+  revision: main
+  dtype: bfloat16
+  max_new_tokens: 1200
+  temperature: 0.0
+
+scoring:
+  executable:
+    execution: 0.50
+    correctness: 0.20
+    clarity: 0.10
+    test_quality: 0.10
+    curriculum_fit: 0.10
+  explanatory:
+    correctness: 0.50
+    completeness: 0.20
+    conceptual_consistency: 0.15
+    curriculum_fit: 0.15
+
+tiers:
+  gold: 0.90
+  silver: 0.80
+  review: 0.70

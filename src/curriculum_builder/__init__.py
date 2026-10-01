@@ -1,0 +1,1 @@
+"""Curriculum-aware dataset balancing and deterministic stratified shuffle."""

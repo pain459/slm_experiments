@@ -1,0 +1,15 @@
+student:
+  # Change freely. Pin `revision` for real experiments.
+  model_id: Qwen/Qwen2.5-Coder-1.5B-Instruct
+  revision: main
+  trust_remote_code: false
+  dtype: bfloat16
+
+teacher:
+  model_id: Qwen/Qwen2.5-Coder-7B-Instruct
+  revision: main
+  trust_remote_code: false
+  dtype: bfloat16
+  max_new_tokens: 1400
+  temperature: 0.35
+  top_p: 0.95

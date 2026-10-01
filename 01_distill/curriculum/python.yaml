@@ -1,0 +1,97 @@
+domain: python
+version: 1
+levels:
+  0: concept
+  1: beginner
+  2: intermediate
+  3: advanced
+  4: hard
+  5: adversarial
+stages:
+  - id: P0
+    name: fundamentals
+    topics:
+      - {id: P00, name: syntax_and_execution, max_level: 2}
+      - {id: P01, name: variables, max_level: 2}
+      - {id: P02, name: primitive_types, max_level: 2}
+      - {id: P03, name: operators, max_level: 2}
+      - {id: P04, name: conditions, max_level: 3}
+      - {id: P05, name: loops, max_level: 3}
+      - {id: P06, name: functions, max_level: 3}
+      - {id: P07, name: scope, max_level: 3}
+      - {id: P08, name: input_output, max_level: 2}
+  - id: P1
+    name: core_containers
+    topics:
+      - {id: P09, name: strings, max_level: 4}
+      - {id: P10, name: lists, max_level: 4}
+      - {id: P11, name: tuples, max_level: 3}
+      - {id: P12, name: dictionaries, max_level: 4}
+      - {id: P13, name: sets, max_level: 4}
+      - {id: P14, name: slicing, max_level: 3}
+      - {id: P15, name: comprehensions, max_level: 4}
+      - {id: P16, name: unpacking, max_level: 3}
+  - id: P2
+    name: program_structure
+    topics:
+      - {id: P17, name: files, max_level: 4}
+      - {id: P18, name: exceptions, max_level: 4}
+      - {id: P19, name: modules, max_level: 4}
+      - {id: P20, name: packages, max_level: 4}
+      - {id: P21, name: classes, max_level: 4}
+      - {id: P22, name: inheritance, max_level: 4}
+      - {id: P23, name: dataclasses, max_level: 4}
+      - {id: P24, name: properties, max_level: 4}
+  - id: P3
+    name: advanced_language
+    topics:
+      - {id: P25, name: iterators, max_level: 4}
+      - {id: P26, name: generators, max_level: 4}
+      - {id: P27, name: decorators, max_level: 4}
+      - {id: P28, name: closures, max_level: 4}
+      - {id: P29, name: context_managers, max_level: 4}
+      - {id: P30, name: functional_patterns, max_level: 4}
+      - {id: P31, name: type_hints, max_level: 4}
+      - {id: P32, name: protocols_and_interfaces, max_level: 4}
+  - id: P4
+    name: standard_library
+    topics:
+      - {id: P33, name: collections, max_level: 4}
+      - {id: P34, name: itertools, max_level: 4}
+      - {id: P35, name: functools, max_level: 4}
+      - {id: P36, name: pathlib, max_level: 4}
+      - {id: P37, name: regex, max_level: 4}
+      - {id: P38, name: datetime, max_level: 4}
+      - {id: P39, name: serialization, max_level: 4}
+      - {id: P40, name: subprocess_concepts, max_level: 3}
+      - {id: P41, name: logging, max_level: 4}
+  - id: P5
+    name: engineering
+    topics:
+      - {id: P42, name: testing, max_level: 5}
+      - {id: P43, name: debugging, max_level: 5}
+      - {id: P44, name: profiling, max_level: 4}
+      - {id: P45, name: packaging, max_level: 4}
+      - {id: P46, name: cli, max_level: 4}
+      - {id: P47, name: apis, max_level: 4}
+      - {id: P48, name: databases, max_level: 4}
+      - {id: P49, name: configuration, max_level: 4}
+      - {id: P50, name: dependency_management, max_level: 4}
+  - id: P6
+    name: parallelism
+    topics:
+      - {id: P51, name: threading, max_level: 5}
+      - {id: P52, name: multiprocessing, max_level: 5}
+      - {id: P53, name: async_await, max_level: 5}
+      - {id: P54, name: queues, max_level: 4}
+      - {id: P55, name: synchronization, max_level: 5}
+  - id: P7
+    name: internals
+    topics:
+      - {id: P56, name: descriptors, max_level: 5}
+      - {id: P57, name: metaclasses, max_level: 5}
+      - {id: P58, name: object_model, max_level: 5}
+      - {id: P59, name: memory_behavior, max_level: 5}
+      - {id: P60, name: bytecode_concepts, max_level: 4}
+      - {id: P61, name: performance, max_level: 5}
+      - {id: P62, name: advanced_typing, max_level: 5}

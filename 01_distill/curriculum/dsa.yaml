@@ -1,0 +1,105 @@
+domain: dsa
+version: 1
+levels:
+  0: concept
+  1: beginner
+  2: intermediate
+  3: advanced
+  4: hard
+  5: olympiad
+stages:
+  - id: D0
+    name: foundations
+    topics:
+      - {id: D00, name: complexity, max_level: 4}
+      - {id: D01, name: arrays, max_level: 5}
+      - {id: D02, name: strings, max_level: 5}
+      - {id: D03, name: hash_maps, max_level: 5}
+      - {id: D04, name: sets, max_level: 4}
+      - {id: D05, name: sorting, max_level: 5}
+      - {id: D06, name: binary_search, max_level: 5}
+  - id: D1
+    name: linear_structures
+    topics:
+      - {id: D07, name: stack, max_level: 5}
+      - {id: D08, name: queue, max_level: 5}
+      - {id: D09, name: deque, max_level: 5}
+      - {id: D10, name: linked_list, max_level: 5}
+      - {id: D11, name: recursion, max_level: 5}
+  - id: D2
+    name: trees
+    topics:
+      - {id: D12, name: binary_trees, max_level: 5}
+      - {id: D13, name: binary_search_trees, max_level: 5}
+      - {id: D14, name: heaps, max_level: 5}
+      - {id: D15, name: tries, max_level: 5}
+  - id: D3
+    name: graphs
+    topics:
+      - {id: D16, name: graph_representation, max_level: 4}
+      - {id: D17, name: bfs, max_level: 5}
+      - {id: D18, name: dfs, max_level: 5}
+      - {id: D19, name: topological_sort, max_level: 5}
+      - {id: D20, name: union_find, max_level: 5}
+      - {id: D21, name: shortest_paths, max_level: 5}
+      - {id: D22, name: minimum_spanning_tree, max_level: 5}
+  - id: D4
+    name: patterns
+    topics:
+      - {id: D23, name: two_pointers, max_level: 5}
+      - {id: D24, name: sliding_window, max_level: 5}
+      - {id: D25, name: prefix_sums, max_level: 5}
+      - {id: D26, name: difference_arrays, max_level: 5}
+      - {id: D27, name: greedy, max_level: 5}
+      - {id: D28, name: backtracking, max_level: 5}
+  - id: D5
+    name: dynamic_programming
+    topics:
+      - {id: D29, name: dp_fundamentals, max_level: 5}
+      - {id: D30, name: one_dimensional_dp, max_level: 5}
+      - {id: D31, name: two_dimensional_dp, max_level: 5}
+      - {id: D32, name: knapsack, max_level: 5}
+      - {id: D33, name: subsequence_dp, max_level: 5}
+      - {id: D34, name: interval_dp, max_level: 5}
+      - {id: D35, name: tree_dp, max_level: 5}
+      - {id: D36, name: digit_dp, max_level: 5}
+      - {id: D37, name: bitmask_dp, max_level: 5}
+  - id: D6
+    name: advanced_structures
+    topics:
+      - {id: D38, name: fenwick_tree, max_level: 5}
+      - {id: D39, name: segment_tree, max_level: 5}
+      - {id: D40, name: sparse_table, max_level: 5}
+      - {id: D41, name: disjoint_structures, max_level: 5}
+  - id: D7
+    name: string_algorithms
+    topics:
+      - {id: D42, name: kmp, max_level: 5}
+      - {id: D43, name: z_algorithm, max_level: 5}
+      - {id: D44, name: rolling_hash, max_level: 5}
+      - {id: D45, name: suffix_structures, max_level: 5}
+      - {id: D46, name: trie_applications, max_level: 5}
+  - id: D8
+    name: mathematics
+    topics:
+      - {id: D47, name: number_theory, max_level: 5}
+      - {id: D48, name: modular_arithmetic, max_level: 5}
+      - {id: D49, name: combinatorics, max_level: 5}
+      - {id: D50, name: primes, max_level: 5}
+      - {id: D51, name: gcd_lcm, max_level: 5}
+      - {id: D52, name: matrix_techniques, max_level: 5}
+  - id: D9
+    name: advanced_algorithms
+    topics:
+      - {id: D53, name: advanced_graph_algorithms, max_level: 5}
+      - {id: D54, name: tree_algorithms, max_level: 5}
+      - {id: D55, name: advanced_dynamic_programming, max_level: 5}
+      - {id: D56, name: computational_geometry, max_level: 5}
+      - {id: D57, name: randomized_algorithms, max_level: 5}
+      - {id: D58, name: offline_algorithms, max_level: 5}
+  - id: D10
+    name: competition
+    topics:
+      - {id: D59, name: mixed_hard_problems, min_level: 3, max_level: 5}
+      - {id: D60, name: competitive_programming, min_level: 3, max_level: 5}
+      - {id: D61, name: olympiad_reasoning, min_level: 4, max_level: 5}

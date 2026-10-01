@@ -1,0 +1,26 @@
+version: 1
+teachers:
+  - name: qwen3_coder_30b
+    backend: hf
+    model_id: Qwen/Qwen3-Coder-30B-A3B-Instruct
+    revision: main
+    enabled: true
+    load_in_4bit: false
+    generation:
+      max_new_tokens: 1800
+      temperature: 0.45
+      top_p: 0.95
+
+  - name: qwen25_coder_7b
+    backend: hf
+    model_id: Qwen/Qwen2.5-Coder-7B-Instruct
+    revision: main
+    enabled: false
+    load_in_4bit: true
+    generation:
+      max_new_tokens: 1600
+      temperature: 0.4
+      top_p: 0.95
+
+# Add other model families here. The factory treats each enabled teacher identically.
+# For reproducible production runs, replace revision: main with a commit hash/tag.

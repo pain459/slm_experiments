@@ -1,0 +1,16 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "python-agent-proxy": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Local Python Agent",
+      "options": {
+        "baseURL": "http://127.0.0.1:8787/v1",
+        "apiKey": "local",
+        "headers": {"X-Session-ID": "opencode-main"}
+      },
+      "models": {"python-agent": {"name": "Python Agent"}}
+    }
+  },
+  "model": "python-agent-proxy/python-agent"
+}

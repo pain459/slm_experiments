@@ -1,0 +1,21 @@
+server:
+  host: 127.0.0.1
+  port: 8787
+model:
+  provider: ollama
+  base_url: http://127.0.0.1:11434
+  name: python-agent
+  native_context: 32768
+context:
+  output_reserve: 6144
+  system_budget: 2000
+  recent_budget: 4500
+  summary_budget: 3500
+  memory_budget: 4500
+  code_budget: 8500
+  tool_budget: 2500
+memory:
+  sqlite_path: artifacts/runtime/memory.sqlite3
+  chroma_path: artifacts/runtime/chroma
+  collection: coding_memory
+  compact_after_messages: 40

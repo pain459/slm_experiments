@@ -1,0 +1,1 @@
+"""Claude-style context virtualization proxy for finite-context local models."""

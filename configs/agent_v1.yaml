@@ -1,0 +1,27 @@
+base_model: experiments/python_v2
+revision: main
+train_file: data/agent/train.jsonl
+validation_file: data/agent/validation.jsonl
+output_dir: experiments/agent_v1
+seed: 42
+max_length: 4096
+learning_rate: 0.00005
+num_train_epochs: 1.0
+per_device_train_batch_size: 1
+per_device_eval_batch_size: 1
+gradient_accumulation_steps: 8
+logging_steps: 10
+save_steps: 100
+eval_steps: 100
+warmup_ratio: 0.03
+weight_decay: 0.01
+bf16: true
+fp16: false
+gradient_checkpointing: true
+load_in_4bit: true
+lora:
+  enabled: true
+  r: 32
+  alpha: 64
+  dropout: 0.05
+  target_modules: [q_proj, k_proj, v_proj, o_proj, gate_proj, up_proj, down_proj]
