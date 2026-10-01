@@ -7,7 +7,7 @@ from typing import List, Dict
 
 # Configuration
 MODEL_NAME = "qwen2.5:7b"
-OUTPUT_FILE = "comprehensive_dataset_expert.json"
+OUTPUT_FILE = "comprehensive_dataset_dsa.json"
 QUESTIONS_PER_TOPIC = 500
 
 # Question types and difficulties for diversity
